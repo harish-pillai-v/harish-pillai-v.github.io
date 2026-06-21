@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harish Pillai KV - Protected Image</title>
+    <!-- Importing a clean, modern font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Modern vibrant gradient background */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* The glass-like card styling */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.4s ease-in-out;
+            position: absolute;
+        }
+
+        /* Hiding mechanism with smooth fade */
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.9);
+            z-index: -1;
+        }
+
+        .active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+            z-index: 1;
+        }
+
+        /* Typography */
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* Form elements */
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="password"]:focus {
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Error message */
+        .error {
+            color: #ff4757;
+            font-size: 13px;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Image Display Styling */
+        #imageCard {
+            max-width: 500px;
+        }
+
+        .image-frame {
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            display: block;
+        }
+
+        .lock-btn {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 10px 20px;
+            width: auto;
+        }
+
+        .lock-btn:hover {
+            background: #667eea;
+            color: white;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Card -->
+    <div class="card active" id="loginCard">
+        <h2>Private Gallery</h2>
+        <p>Enter the passcode to view the childhood image of Harish Pillai V.</p>
+        
+        <div class="input-group">
+            <input type="password" id="passwordInput" placeholder="Enter Password">
+        </div>
+        
+        <button onclick="checkPassword()">Unlock Image</button>
+        <div class="error" id="errorMessage">Incorrect password. Please try again.</div>
+    </div>
+
+    <!-- Image Card -->
+    <div class="card hidden" id="imageCard">
+        <h2>Harish Pillai KV</h2>
+        <p>Childhood Memories</p>
+        
+        <div class="image-frame">
+            <!-- REPLACE THE SRC BELOW WITH YOUR ACTUAL IMAGE PATH -->
+            <img src="https://via.placeholder.com/600x600/eeeeee/888888?text=Childhood+Photo+of+Harish" alt="Child image of Harish Pillai V">
+        </div>
+        
+        <button class="lock-btn" onclick="lockGallery()">Lock Again</button>
+    </div>
+
+    <script>
+        // Set your desired password here
+        const CORRECT_PASSWORD = "1454"; 
+
+        const loginCard = document.getElementById("loginCard");
+        const imageCard = document.getElementById("imageCard");
+        const passwordInput = document.getElementById("passwordInput");
+        const errorMessage = document.getElementById("errorMessage");
+
+        // Function to check the password
+        function checkPassword() {
+            if (passwordInput.value === CORRECT_PASSWORD) {
+                // Success: Hide login, show image, clear error
+                errorMessage.style.opacity = "0";
+                loginCard.classList.remove("active");
+                loginCard.classList.add("hidden");
+                
+                setTimeout(() => {
+                    imageCard.classList.remove("hidden");
+                    imageCard.classList.add("active");
+                }, 300); // Slight delay for smooth transition
+                
+            } else {
+                // Fail: Show error, shake animation could be added here
+                errorMessage.style.opacity = "1";
+                passwordInput.value = ""; // clear input
+                passwordInput.focus();
+            }
+        }
+
+        // Function to re-lock the gallery
+        function lockGallery() {
+            passwordInput.value = ""; // clear input for next time
+            imageCard.classList.remove("active");
+            imageCard.classList.add("hidden");
+            
+            setTimeout(() => {
+                loginCard.classList.remove("hidden");
+                loginCard.classList.add("active");
+            }, 300);
+        }
+
+        // Allow pressing "Enter" key to trigger the unlock
+        passwordInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                checkPassword();
+            }
+        });
+    </script>
+
+</body>
+</html>
